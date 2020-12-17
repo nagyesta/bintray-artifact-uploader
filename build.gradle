@@ -1,0 +1,38 @@
+plugins {
+    id 'io.toolebox.git-versioner' version '1.6.5'
+}
+
+group 'com.github.nagyesta'
+
+project.ext {
+    gitToken = project.hasProperty('githubToken') ? (project.property('githubToken') as String) : ''
+    gitUser = project.hasProperty('githubUser') ? (project.property('githubUser') as String) : ''
+}
+
+versioner {
+    startFrom {
+        major = 0
+        minor = 1
+        patch = 0
+    }
+    match {
+        major = '{major}'
+        minor = '{minor}'
+        patch = '{patch}'
+    }
+    pattern {
+        pattern = "%M.%m.%p"
+    }
+    git {
+        authentication {
+            https {
+                token = project.ext.gitToken
+            }
+        }
+    }
+    tag {
+        prefix = ''
+        useCommitMessage = true
+    }
+}
+

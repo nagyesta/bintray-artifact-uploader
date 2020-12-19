@@ -1,0 +1,80 @@
+plugins {
+    id 'com.palantir.docker' version '0.25.0'
+}
+
+group 'com.github.nagyesta'
+
+task clean {
+    outputs.dir(file("${buildDir}/test-results"))
+    outputs.upToDateWhen { false }
+
+    doLast {
+        file("${buildDir}/test-results").deleteDir()
+    }
+
+    finalizedBy(dockerClean)
+}
+
+docker {
+    name "bintray-artifact-uploader:${rootProject.version}"
+    tag 'bintrayNagyesta', "nagyesta-docker-releases.bintray.io/bintray-artifact-uploader:${rootProject.version}"
+    dockerfile file('src/docker/Dockerfile')
+    files file('src/docker/entrypoint.sh')
+    pull true
+    noCache true
+}
+
+task systemTestRun(type: Exec) {
+    outputs.dir(file("${buildDir}/test-results/systemTest/"))
+    outputs.upToDateWhen { false }
+    dependsOn(tasks.docker)
+    dependsOn(':stub:dockerRun')
+    finalizedBy(':stub:dockerStop')
+
+    workingDir file("${projectDir}/src/test/script")
+    group = "Execution"
+    //noinspection GroovyAccessibility
+    description = "Run the system tests"
+    commandLine "sh", file("${projectDir}/src/test/script/run-all.sh"),
+            "bintray-artifact-uploader:${rootProject.version}",
+            file("${projectDir}/src/test/resources/input/"),
+            file("${buildDir}/test-results/systemTest/")
+    logging.captureStandardOutput LogLevel.INFO
+    logging.captureStandardError LogLevel.ERROR
+}
+
+task systemTestEvaluate {
+    inputs.dir(file("${buildDir}/test-results/systemTest/"))
+    inputs.dir(file("${projectDir}/src/test/resources/expected/output/"))
+    outputs.file(file("${buildDir}/test-results/systemTestEvaluate/result"))
+    outputs.upToDateWhen { false }
+    dependsOn systemTestRun
+    doLast {
+        def expected = file("${projectDir}/src/test/resources/expected/output/")
+                .listFiles().findAll {it.name.endsWith('.txt')}.asCollection()
+        def diffFound = false;
+        expected.forEach({
+            def actualFile = file("${buildDir}/test-results/systemTest/${it.name}")
+            if (it.text != actualFile.text) {
+                logger.error("File contents do not match for pair:\n expected: ${it.absolutePath}\n actual: ${actualFile.absolutePath}")
+                diffFound = true;
+            } else {
+                logger.debug("Files verified to be matching: \n expected: ${it.absolutePath}\n actual: ${actualFile.absolutePath}")
+            }
+        })
+
+        if (diffFound) {
+            throw new StopExecutionException("System test (validate) assertion failed.")
+        }
+        file("${buildDir}/test-results/systemTestEvaluate/result").write("Passed")
+    }
+}
+
+task build {
+    dependsOn(systemTestEvaluate)
+}
+
+task publish {
+    dependsOn(build)
+    dependsOn("dockerPushBintrayNagyesta")
+}

@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "PUT",
+    "urlPattern": "/empty/content/subject/repo-name/com/github/gh-user/artifact.name/1.2.0/artifact.name-1.2.0(\\.pom|\\.jar|-sources\\.jar|-javadoc\\.jar)",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Basic YXBpLXVzZXI6YXBpLWtleQ=="
+      },
+      "X-Bintray-Package": {
+        "equalTo": "package-name"
+      },
+      "X-Bintray-Version": {
+        "matches": "v1.2.0"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "bodyFileName": "version-not-found.json"
+  }
+}

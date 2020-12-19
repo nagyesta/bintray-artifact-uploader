@@ -1,0 +1,18 @@
+
+       ::  ██████╗         █████╗        ██╗   ██╗     ::
+       ::  ██╔══██╗       ██╔══██╗       ██║   ██║     ::
+       ::  ██████╔╝       ███████║       ██║   ██║     ::
+       ::  ██╔══██╗       ██╔══██║       ██║   ██║     ::
+       ::  ██████╔╝██╗    ██║  ██║██╗    ╚██████╔╝██╗  ::
+       ::  ╚═════╝ ╚═╝    ╚═╝  ╚═╝╚═╝     ╚═════╝ ╚═╝  ::
+
+       :: Starting up...
+
+
+  INFO :: Version found: v1.2.3. OK.
+
+  INFO :: Uploading /github/workspace/pom.xml
+ ERROR :: Unexpected response:
+ ERROR :: {"message":"Version was not found for package"}
+
+ ERROR :: Exiting...

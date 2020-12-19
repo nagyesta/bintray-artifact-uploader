@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "ANY",
+    "urlPattern": "^/.+/api-user/.+$",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Basic YXBpLXVzZXI6YXBpLWtleQ=="
+      }
+    }
+  },
+  "response": {
+    "status": 401,
+    "bodyFileName": "no-access.json"
+  }
+}

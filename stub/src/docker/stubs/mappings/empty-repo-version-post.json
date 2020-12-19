@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/empty/packages/subject/repo-name/package-name/versions",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Basic YXBpLXVzZXI6YXBpLWtleQ=="
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "bodyFileName": "version-found.json"
+  }
+}

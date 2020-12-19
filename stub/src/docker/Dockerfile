@@ -1,0 +1,2 @@
+FROM rodolpheche/wiremock@sha256:2328a9fce2bf32ea6a4747f660911dccaf38a2287da35e0dba2bcd664aa7026f
+COPY stubs /home/wiremock

@@ -6,7 +6,6 @@ group 'com.github.nagyesta'
 
 project.ext {
     gitToken = project.hasProperty('githubToken') ? (project.property('githubToken') as String) : ''
-    gitUser = project.hasProperty('githubUser') ? (project.property('githubUser') as String) : ''
 }
 
 versioner {
@@ -35,4 +34,3 @@ versioner {
         useCommitMessage = true
     }
 }
-

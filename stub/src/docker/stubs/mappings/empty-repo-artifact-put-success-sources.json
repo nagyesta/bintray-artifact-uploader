@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "PUT",
+    "url": "/empty/content/subject/repo-name/com/github/gh-user/artifact.name/1.2.3/artifact.name-1.2.3-sources.jar",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Basic YXBpLXVzZXI6YXBpLWtleQ=="
+      },
+      "X-Bintray-Package": {
+        "equalTo": "package-name"
+      },
+      "X-Bintray-Version": {
+        "matches": "v1.2.3"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "equalTo": "Dummy Jar Sources\n"
+      }
+    ]
+  },
+  "response": {
+    "status": 201,
+    "bodyFileName": "success.json"
+  }
+}

@@ -1,0 +1,22 @@
+plugins {
+    id 'com.palantir.docker' version '0.25.0'
+    id 'com.palantir.docker-run' version '0.25.0'
+}
+
+group 'com.github.nagyesta'
+
+docker {
+    name "bintray-artifact-uploader-mock:${rootProject.version}"
+    dockerfile file('src/docker/Dockerfile')
+    copySpec.from("src/docker/stubs").into("stubs")
+    pull true
+    noCache true
+}
+
+dockerRun {
+    name "bau-wiremock"
+    image "bintray-artifact-uploader-mock:${rootProject.version}"
+    daemonize true
+    arguments '--rm'
+}
+tasks.dockerRun.dependsOn tasks.docker

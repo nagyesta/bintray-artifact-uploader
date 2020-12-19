@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/empty/packages/subject/repo-name/package-name/versions/.+",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Basic YXBpLXVzZXI6YXBpLWtleQ=="
+      }
+    }
+  },
+  "response": {
+    "status": 404,
+    "bodyFileName": "version-not-found.json"
+  }
+}

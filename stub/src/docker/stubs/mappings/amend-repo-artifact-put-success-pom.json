@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "PUT",
+    "url": "/amend/content/subject/repo-name/com/github/gh-user/artifact.name/1.2.3/artifact.name-1.2.3.pom",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Basic YXBpLXVzZXI6YXBpLWtleQ=="
+      },
+      "X-Bintray-Package": {
+        "equalTo": "package-name"
+      },
+      "X-Bintray-Version": {
+        "matches": "v1.2.3"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "equalToXml": "<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\n    <modelVersion>4.0.0</modelVersion>\n    <groupId>com.example</groupId>\n    <artifactId>example-project</artifactId>\n    <version>1.0</version>\n</project>\n"
+      }
+    ]
+  },
+  "response": {
+    "status": 401,
+    "bodyFileName": "version-not-found.json"
+  }
+}

@@ -1,0 +1,30 @@
+
+       ::  ██████╗         █████╗        ██╗   ██╗     ::
+       ::  ██╔══██╗       ██╔══██╗       ██║   ██║     ::
+       ::  ██████╔╝       ███████║       ██║   ██║     ::
+       ::  ██╔══██╗       ██╔══██║       ██║   ██║     ::
+       ::  ██████╔╝██╗    ██║  ██║██╗    ╚██████╔╝██╗  ::
+       ::  ╚═════╝ ╚═╝    ╚═╝  ╚═╝╚═╝     ╚═════╝ ╚═╝  ::
+
+       :: Starting up...
+
+
+  INFO :: Version not found: v1.2.3. Attempting to create it...
+  INFO :: Version created.
+
+  INFO :: Uploading /github/workspace/pom.xml
+  INFO :: Upload done.
+
+  INFO :: Uploading /github/workspace/dummy.jar.content
+  INFO :: Upload done.
+
+  INFO :: Uploading /github/workspace/dummy-sources.jar.content
+  INFO :: Upload done.
+
+  INFO :: Uploading /github/workspace/dummy-javadoc.jar.content
+  INFO :: Upload done.
+
+
+  WARN :: All done, you can check and publish your package at Bintray
+
+

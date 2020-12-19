@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/amend/packages/subject/repo-name/package-name/versions/v1.2.3",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Basic YXBpLXVzZXI6YXBpLWtleQ=="
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "version-found.json"
+  }
+}

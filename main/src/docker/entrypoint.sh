@@ -14,9 +14,9 @@ printf "\n"
 cd /github/workspace/ || exit
 
 export ENABLED_LOG_LEVEL_DEBUG=${INPUT_DEBUG_LOG:-false}
-export ENABLED_LOG_LEVEL_INFO=${INPUT_DEBUG_LOG:-true}
-export ENABLED_LOG_LEVEL_WARN=${INPUT_DEBUG_LOG:-true}
-export ENABLED_LOG_LEVEL_ERROR=${INPUT_DEBUG_LOG:-true}
+export ENABLED_LOG_LEVEL_INFO=${INPUT_INFO_LOG:-true}
+export ENABLED_LOG_LEVEL_WARN=${INPUT_WARN_LOG:-true}
+export ENABLED_LOG_LEVEL_ERROR=${INPUT_ERROR_LOG:-true}
 
 # Define validation steps
 
@@ -96,27 +96,29 @@ fi
 # Define upload functions
 
 create_version_if_missing() {
-  BINTRAY_VERSION_URL="${BINTRAY_BASE_URL}packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/versions/${BINTRAY_VERSION}"
-  log "DEBUG" "$(printf "Sending GET to %s" "${BINTRAY_VERSION_URL}")"
-  if ! curl -s -o /home/curl_user/version_response.txt "-u${BINTRAY_API_USER}:${BINTRAY_API_KEY}" "${BINTRAY_VERSION_URL}"; then
-    printf "\n"
-    log "ERROR" "$(printf "The curl command failed.")"
-    exit 5
-  fi
-  printf "\n"
-
-  echo "{\"name\":\"${BINTRAY_VERSION}\",\"released\": \"$(date -Idate)T00:00:00.000Z\",\"desc\": \"\",\"vcs_tag\": \"${BINTRAY_VERSION}\"}" >/home/curl_user/vcreate.txt
-  if grep </home/curl_user/version_response.txt "was not found" >/dev/null 2>&1; then
-    log "INFO" "$(printf "Version not found: %s. Attempting to create it..." "${BINTRAY_VERSION}")"
-    if ! curl -s -o /dev/null "-u${BINTRAY_API_USER}:${BINTRAY_API_KEY}" "${BINTRAY_BASE_URL}packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/versions" -d "$(cat /home/curl_user/vcreate.txt)"; then
+  if [ "${DRY_RUN_ONLY}" = "false" ]; then
+    BINTRAY_VERSION_URL="${BINTRAY_BASE_URL}packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/versions/${BINTRAY_VERSION}"
+    log "DEBUG" "$(printf "Sending GET to %s" "${BINTRAY_VERSION_URL}")"
+    if ! curl -s -o /home/curl_user/version_response.txt "-u${BINTRAY_API_USER}:${BINTRAY_API_KEY}" "${BINTRAY_VERSION_URL}"; then
       printf "\n"
       log "ERROR" "$(printf "The curl command failed.")"
-      exit 10
-    else
-      log "INFO" "Version created."
+      exit 5
     fi
-  else
-    log "INFO" "$(printf "Version found: %s. OK." "${BINTRAY_VERSION}")"
+    printf "\n"
+
+    echo "{\"name\":\"${BINTRAY_VERSION}\",\"released\": \"$(date -Idate)T00:00:00.000Z\",\"desc\": \"\",\"vcs_tag\": \"${BINTRAY_VERSION}\"}" >/home/curl_user/vcreate.txt
+    if grep </home/curl_user/version_response.txt "was not found" >/dev/null 2>&1; then
+      log "INFO" "$(printf "Version not found: %s. Attempting to create it..." "${BINTRAY_VERSION}")"
+      if ! curl -s -o /dev/null "-u${BINTRAY_API_USER}:${BINTRAY_API_KEY}" "${BINTRAY_BASE_URL}packages/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/versions" -d "$(cat /home/curl_user/vcreate.txt)"; then
+        printf "\n"
+        log "ERROR" "$(printf "The curl command failed.")"
+        exit 10
+      else
+        log "INFO" "Version created."
+      fi
+    else
+      log "INFO" "$(printf "Version found: %s. OK." "${BINTRAY_VERSION}")"
+    fi
   fi
 }
 

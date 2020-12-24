@@ -15,11 +15,11 @@
   INFO :: Uploading /github/workspace/pom.xml
   INFO :: Upload done.
 
-  INFO :: SKIP JAR: /github/workspace/
+  INFO :: SKIP JAR: NULL
 
-  INFO :: SKIP SOURCE JAR: /github/workspace/
+  INFO :: SKIP SOURCE JAR: NULL
 
-  INFO :: SKIP JAVADOC JAR: /github/workspace/
+  INFO :: SKIP JAVADOC JAR: NULL
 
 
   WARN :: All done, you can check and publish your package at Bintray

@@ -8,3 +8,5 @@
 Bintray Artifact Uploader is meant to give the backbone of a Bintray upload Github action.
 
 This project is producing and publishing a simple Docker image.
+
+Please see the contents of [the this directory](main/src/test/script) to see usage examples.

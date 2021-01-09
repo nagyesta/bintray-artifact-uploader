@@ -31,7 +31,7 @@ get_value_of() {
 
 log() {
   LOG_LEVEL="$1"
-  if [ "$(get_value_of "ENABLED_LOG_LEVEL_${LOG_LEVEL}")" = "true" ] ; then
+  if [ "$(get_value_of "ENABLED_LOG_LEVEL_${LOG_LEVEL}")" = "true" ]; then
     printf "%6s :: %s\n" "${LOG_LEVEL}" "$2"
   fi
 }
@@ -47,9 +47,6 @@ validate_input() {
 
 # Validate mandatory input
 
-validate_input "POM_FILE_NAME"
-validate_input "ARTIFACT_GROUP_ID"
-validate_input "ARTIFACT_ARTIFACT_ID"
 validate_input "API_USER"
 validate_input "API_KEY"
 validate_input "REPO"
@@ -59,11 +56,9 @@ validate_input "PACKAGE_NAME"
 
 export DRY_RUN_ONLY="${INPUT_DRY_RUN:-false}"
 export BINTRAY_VERSION_PREFIX="${INPUT_BINTRAY_VERSION_PREFIX:-v}"
-export BINTRAY_ART_GROUP="${INPUT_ARTIFACT_GROUP_ID}"
-export BINTRAY_ART_NAME="${INPUT_ARTIFACT_ARTIFACT_ID}"
 if [ -z "${INPUT_ARTIFACT_VERSION}" ]; then
   BINTRAY_ART_VERSION=$(git log --format='format:%d' --decorate-refs="refs/tags/${BINTRAY_VERSION_PREFIX}*" -n 1 | grep tag: | sed 's/^.*tag: //' | sed "s/${BINTRAY_VERSION_PREFIX}//" | sed 's/[,)].*$//')
-  if [ -z "${BINTRAY_ART_VERSION}" ] ; then
+  if [ -z "${BINTRAY_ART_VERSION}" ]; then
     log "ERROR" "INPUT_ARTIFACT_VERSION was not set and no matching tag was found."
     exit 2
   fi
@@ -79,8 +74,6 @@ BINTRAY_SUBJECT=$([ -n "${INPUT_SUBJECT}" ] && printf "%s" "${INPUT_SUBJECT}" ||
 export BINTRAY_SUBJECT
 export BINTRAY_PACKAGE="${INPUT_PACKAGE_NAME}"
 export BINTRAY_VERSION="${BINTRAY_VERSION_PREFIX}${BINTRAY_ART_VERSION}"
-BINTRAY_PATH=$(echo "${BINTRAY_ART_GROUP}" | sed s/\\./\\//g)
-export BINTRAY_PATH
 
 export BINTRAY_BASE_URL=${INPUT_BASE_URL:-https://api.bintray.com/}
 
@@ -122,24 +115,61 @@ create_version_if_missing() {
   fi
 }
 
-upload_file() {
-  LOCAL_FILE="$1"
-  BINTRAY_URL="$2"
-  ART_CLASSIFIER="$3"
-  ART_PACKAGING="$4"
+log_upload() {
+  LOG_UPL_LOCAL_FILE="$1"
+  LOG_UPL_BINTRAY_URL="$2"
+  LOG_UPL_BINTRAY_ART_GROUP="$3"
+  LOG_UPL_BINTRAY_ART_NAME="$4"
+  LOG_UPL_BINTRAY_ART_VERSION="$5"
+  LOG_UPL_ART_CLASSIFIER="$6"
+  LOG_UPL_ART_PACKAGING="$7"
+
   printf "\n"
-  log "INFO" "$(printf "Uploading %s" "${LOCAL_FILE}")"
+  log "INFO" "$(printf "Uploading %s" "${LOG_UPL_LOCAL_FILE}")"
   log "DEBUG" " to"
-  log "DEBUG" "$(printf "  %s" "${BINTRAY_URL}")"
+  log "DEBUG" "$(printf "  %s" "${LOG_UPL_BINTRAY_URL}")"
   log "DEBUG" " as artifact"
-  log "DEBUG" "$(printf "  group: %s" "${BINTRAY_ART_GROUP}")"
-  log "DEBUG" "$(printf "  name: %s" "${BINTRAY_ART_NAME}")"
-  log "DEBUG" "$(printf "  version: %s" "${BINTRAY_ART_VERSION}")"
-  log "DEBUG" "$(printf "  classifier: %s" "${ART_CLASSIFIER}")"
-  log "DEBUG" "$(printf "  packaging: %s" "${ART_PACKAGING}")"
-  if [ "${DRY_RUN_ONLY}" = "false" ]; then
+  log "DEBUG" "$(printf "  group: %s" "${LOG_UPL_BINTRAY_ART_GROUP}")"
+  log "DEBUG" "$(printf "  name: %s" "${LOG_UPL_BINTRAY_ART_NAME}")"
+  log "DEBUG" "$(printf "  version: %s" "${LOG_UPL_BINTRAY_ART_VERSION}")"
+  log "DEBUG" "$(printf "  classifier: %s" "${LOG_UPL_ART_CLASSIFIER}")"
+  log "DEBUG" "$(printf "  packaging: %s" "${LOG_UPL_ART_PACKAGING}")"
+}
+
+to_bintray_url() {
+  TO_URL_BASE_URL="$1"
+  TO_URL_CONTENT_PATH="$2"
+  TO_URL_ART_NAME="$3"
+  TO_URL_ART_VERSION="$4"
+  TO_URL_ART_CLASSIFIER="$5"
+  TO_URL_ART_PACKAGING="$6"
+
+  if [ "${TO_URL_ART_CLASSIFIER}" != "-" ]; then
+    TO_URL_ART_SUFFIX="-${TO_URL_ART_CLASSIFIER}.${TO_URL_ART_PACKAGING}"
+  else
+    TO_URL_ART_SUFFIX=".${TO_URL_ART_PACKAGING}"
+  fi
+  TO_URL_BINTRAY_URL="${TO_URL_BASE_URL}${TO_URL_CONTENT_PATH}/${TO_URL_ART_NAME}-${TO_URL_ART_VERSION}${TO_URL_ART_SUFFIX}"
+  printf "%s" "${TO_URL_BINTRAY_URL}"
+}
+
+upload_file() {
+  UPL_BINTRAY_API_USER="${BINTRAY_API_USER}"
+  UPL_BINTRAY_API_KEY="${BINTRAY_API_KEY}"
+  UPL_DRY_RUN_ONLY="${DRY_RUN_ONLY}"
+  UPL_LOCAL_FILE="$1"
+  UPL_BINTRAY_URL="$2"
+  UPL_BINTRAY_PACKAGE="$3"
+  UPL_BINTRAY_VERSION="$4"
+
+  if [ "${UPL_DRY_RUN_ONLY}" = "false" ]; then
     rm -f response.txt
-    if ! curl -s -T "${LOCAL_FILE}" -o /home/curl_user/response.txt "-u${BINTRAY_API_USER}:${BINTRAY_API_KEY}" -H "X-Bintray-Package:${BINTRAY_PACKAGE}" -H "X-Bintray-Version:${BINTRAY_VERSION}" "${BINTRAY_URL}"; then
+    if ! curl -s -T "${UPL_LOCAL_FILE}" \
+      -o /home/curl_user/response.txt \
+      "-u${UPL_BINTRAY_API_USER}:${UPL_BINTRAY_API_KEY}" \
+      -H "X-Bintray-Package:${UPL_BINTRAY_PACKAGE}" \
+      -H "X-Bintray-Version:${UPL_BINTRAY_VERSION}" \
+      "${UPL_BINTRAY_URL}"; then
       printf "\n"
       log "ERROR" "$(printf "The curl command failed.")"
       exit 20
@@ -151,67 +181,110 @@ upload_file() {
       log "ERROR" "Exiting..."
       exit 30
     fi
+    du -h "${UPL_LOCAL_FILE}" >> /home/curl_user/uploaded_files.txt
     log "INFO" "Upload done."
   else
     log "INFO" "SIMULATION:"
-    log "INFO" "$(printf "curl -T %s" "${LOCAL_FILE}")"
-    log "INFO" "$(printf " -u%s:<API_KEY>" "${BINTRAY_API_USER}")"
-    log "INFO" "$(printf " -H \"X-Bintray-Package:%s\"" "${BINTRAY_PACKAGE}")"
-    log "INFO" "$(printf " -H \"X-Bintray-Version:%s\"" "${BINTRAY_VERSION}")"
-    log "INFO" "$(printf " %s" "${BINTRAY_URL}")"
+    log "INFO" "$(printf "curl -T %s" "${UPL_LOCAL_FILE}")"
+    log "INFO" "$(printf " -u%s:<API_KEY>" "${UPL_BINTRAY_API_USER}")"
+    log "INFO" "$(printf " -H \"X-Bintray-Package:%s\"" "${UPL_BINTRAY_PACKAGE}")"
+    log "INFO" "$(printf " -H \"X-Bintray-Version:%s\"" "${UPL_BINTRAY_VERSION}")"
+    log "INFO" "$(printf " %s" "${UPL_BINTRAY_URL}")"
+    du -h "${UPL_LOCAL_FILE}" >> /home/curl_user/uploaded_files.txt
   fi
+}
+
+process_file() {
+  PRF_BASE_URL="${BINTRAY_BASE_URL}"
+  PRF_BT_PACKAGE="${BINTRAY_PACKAGE}"
+  PRF_BT_VERSION="${BINTRAY_VERSION}"
+  PRF_VERSION="${BINTRAY_ART_VERSION}"
+  PRF_BINTRAY_SUBJECT="${BINTRAY_SUBJECT}"
+  PRF_BINTRAY_REPO="${BINTRAY_REPO}"
+  PRF_LOCAL_FILE="$1"
+  PRF_GROUP="$2"
+  PRF_ARTIFACT="$3"
+  PRF_CLASSIFIER="$(echo "$4" | tr "[:upper:]" "[:lower:]")"
+  PRF_PACKAGING="$(echo "$5" | tr "[:upper:]" "[:lower:]")"
+
+  PRF_BINTRAY_PATH=$(echo "${PRF_GROUP}" | sed s/\\./\\//g)
+  PRF_CONTENT_PATH="content/${PRF_BINTRAY_SUBJECT}/${PRF_BINTRAY_REPO}/${PRF_BINTRAY_PATH}/${PRF_ARTIFACT}/${PRF_VERSION}"
+
+  if [ "${PRF_CLASSIFIER}" != "-" ]; then
+    PRF_TYPE="$(echo "${PRF_CLASSIFIER}" | tr "[:lower:]" "[:upper:]") $(echo "${PRF_PACKAGING}" | tr "[:lower:]" "[:upper:]")"
+  else
+    PRF_TYPE="$(echo "${PRF_PACKAGING}" | tr "[:lower:]" "[:upper:]")"
+  fi
+
+  PRF_URL="$(to_bintray_url "${PRF_BASE_URL}" "${PRF_CONTENT_PATH}" "${PRF_ARTIFACT}" "${PRF_VERSION}" "${PRF_CLASSIFIER}" "${PRF_PACKAGING}")"
+  if [ -n "${PRF_LOCAL_FILE}" ] && [ -f "${PRF_LOCAL_FILE}" ]; then
+    log_upload "${PRF_LOCAL_FILE}" "${PRF_URL}" "${PRF_GROUP}" "${PRF_ARTIFACT}" "${PRF_VERSION}" "${PRF_CLASSIFIER}" "${PRF_PACKAGING}"
+    upload_file "${PRF_LOCAL_FILE}" "${PRF_URL}" "${PRF_BT_PACKAGE}" "${PRF_BT_VERSION}"
+  else
+    printf "\n"
+    log "INFO" "$(printf "SKIP %s: %s" "${PRF_TYPE}" "${PRF_LOCAL_FILE:-NULL}")"
+  fi
+}
+
+legacy_upload() {
+  validate_input "POM_FILE_NAME"
+  validate_input "ARTIFACT_GROUP_ID"
+  validate_input "ARTIFACT_ARTIFACT_ID"
+  export BINTRAY_ART_GROUP="${INPUT_ARTIFACT_GROUP_ID}"
+  export BINTRAY_ART_NAME="${INPUT_ARTIFACT_ARTIFACT_ID}"
+
+  create_version_if_missing
+
+  # POM
+  LOCAL_POM_FILE="$(ls /github/workspace/${INPUT_POM_FILE_NAME:-UNKNOWN_FILE_DO_NOT_MATCH} 2>/dev/null)"
+  process_file "${LOCAL_POM_FILE}" "${BINTRAY_ART_GROUP}" "${BINTRAY_ART_NAME}" "-" "pom"
+  # JAR
+  LOCAL_JAR_FILE="$(ls /github/workspace/${INPUT_JAR_FILE_NAME:-UNKNOWN_FILE_DO_NOT_MATCH} 2>/dev/null)"
+  process_file "${LOCAL_JAR_FILE}" "${BINTRAY_ART_GROUP}" "${BINTRAY_ART_NAME}" "-" "jar"
+  # SOURCES
+  LOCAL_SOURCE_JAR_FILE="$(ls /github/workspace/${INPUT_SOURCE_JAR_FILE_NAME:-UNKNOWN_FILE_DO_NOT_MATCH} 2>/dev/null)"
+  process_file "${LOCAL_SOURCE_JAR_FILE}" "${BINTRAY_ART_GROUP}" "${BINTRAY_ART_NAME}" "sources" "jar"
+  # JAVADOC
+  LOCAL_JAVADOC_JAR_FILE="$(ls /github/workspace/${INPUT_JAVADOC_JAR_FILE_NAME:-UNKNOWN_FILE_DO_NOT_MATCH} 2>/dev/null)"
+  process_file "${LOCAL_JAVADOC_JAR_FILE}" "${BINTRAY_ART_GROUP}" "${BINTRAY_ART_NAME}" "javadoc" "jar"
+}
+
+process_manifest() {
+  MAN_LOCAL_FILE="$1"
+
+  create_version_if_missing
+
+  # shellcheck disable=SC2002
+  cat "${MAN_LOCAL_FILE}" | grep -v "^#" | grep "^\\([^:]\\+:\\)\\{4\\}[^:]\\+$" | while read -r line
+  do
+    printf "\n"
+    log "DEBUG" "Processing line: $line"
+    PM_GROUP="$(echo "$line" | cut -d ":" -f 1)"
+    PM_ARTIFACT="$(echo "$line" | cut -d ":" -f 2)"
+    PM_CLASSIFIER="$(echo "$line" | cut -d ":" -f 3)"
+    PM_PACKAGING="$(echo "$line" | cut -d ":" -f 4)"
+    PM_FILE_NAME="$(echo "$line" | cut -d ":" -f 5)"
+
+    PM_LOCAL_FILE="$(ls /github/workspace/${PM_FILE_NAME:-UNKNOWN_FILE_DO_NOT_MATCH} 2>/dev/null)"
+    log "DEBUG" "File name resolved as: ${PM_LOCAL_FILE}"
+    process_file "${PM_LOCAL_FILE}" "${PM_GROUP}" "${PM_ARTIFACT}" "${PM_CLASSIFIER}" "${PM_PACKAGING}"
+  done
 }
 
 # Start execution
 
-create_version_if_missing
-
-BINTRAY_CONTENT_PATH="content/${BINTRAY_SUBJECT}/${BINTRAY_REPO}/${BINTRAY_PATH}/${BINTRAY_ART_NAME}/${BINTRAY_ART_VERSION}"
-
-# POM
-
-LOCAL_POM_FILE="$(ls /github/workspace/"${INPUT_POM_FILE_NAME:-UNKNOWN_FILE_DO_NOT_MATCH}" 2>/dev/null)"
-if [ -n "${LOCAL_POM_FILE}" ] && [ -f "${LOCAL_POM_FILE}" ]; then
-  BINTRAY_POM_URL="${BINTRAY_BASE_URL}${BINTRAY_CONTENT_PATH}/${BINTRAY_ART_NAME}-${BINTRAY_ART_VERSION}.pom"
-  upload_file "${LOCAL_POM_FILE}" "${BINTRAY_POM_URL}" "-" "pom"
+touch /home/curl_user/uploaded_files.txt
+LOCAL_MANIFEST="$(ls /github/workspace/"${INPUT_MANIFEST:-UNKNOWN_FILE_DO_NOT_MATCH}" 2>/dev/null)"
+if [ -n "${LOCAL_MANIFEST}" ] && [ -f "${LOCAL_MANIFEST}" ]; then
+  process_manifest "${INPUT_MANIFEST}"
 else
-  printf "\n"
-  log "INFO" "$(printf "SKIP POM: %s" "${LOCAL_POM_FILE:-NULL}")"
-fi
-
-# JAR
-
-LOCAL_JAR_FILE="$(ls /github/workspace/"${INPUT_JAR_FILE_NAME:-UNKNOWN_FILE_DO_NOT_MATCH}" 2>/dev/null)"
-if [ -n "${LOCAL_JAR_FILE}" ] && [ -f "${LOCAL_JAR_FILE}" ]; then
-  BINTRAY_JAR_URL="${BINTRAY_BASE_URL}${BINTRAY_CONTENT_PATH}/${BINTRAY_ART_NAME}-${BINTRAY_ART_VERSION}.jar"
-  upload_file "${LOCAL_JAR_FILE}" "${BINTRAY_JAR_URL}" "-" "jar"
-else
-  printf "\n"
-  log "INFO" "$(printf "SKIP JAR: %s" "${LOCAL_JAR_FILE:-NULL}")"
-fi
-
-# SOURCES
-
-LOCAL_SOURCE_JAR_FILE="$(ls /github/workspace/"${INPUT_SOURCE_JAR_FILE_NAME:-UNKNOWN_FILE_DO_NOT_MATCH}" 2>/dev/null)"
-if [ -n "${LOCAL_SOURCE_JAR_FILE}" ] && [ -f "${LOCAL_SOURCE_JAR_FILE}" ]; then
-  BINTRAY_SOURCE_JAR_URL="${BINTRAY_BASE_URL}${BINTRAY_CONTENT_PATH}/${BINTRAY_ART_NAME}-${BINTRAY_ART_VERSION}-sources.jar"
-  upload_file "${LOCAL_SOURCE_JAR_FILE}" "${BINTRAY_SOURCE_JAR_URL}" "sources" "jar"
-else
-  printf "\n"
-  log "INFO" "$(printf "SKIP SOURCE JAR: %s" "${LOCAL_SOURCE_JAR_FILE:-NULL}")"
-fi
-
-# JAVADOC
-
-LOCAL_JAVADOC_JAR_FILE="$(ls /github/workspace/"${INPUT_JAVADOC_JAR_FILE_NAME:-UNKNOWN_FILE_DO_NOT_MATCH}" 2>/dev/null)"
-if [ -n "${LOCAL_JAVADOC_JAR_FILE}" ] && [ -f "${LOCAL_JAVADOC_JAR_FILE}" ]; then
-  BINTRAY_JAVADOC_JAR_URL="${BINTRAY_BASE_URL}${BINTRAY_CONTENT_PATH}/${BINTRAY_ART_NAME}-${BINTRAY_ART_VERSION}-javadoc.jar"
-  upload_file "${LOCAL_JAVADOC_JAR_FILE}" "${BINTRAY_JAVADOC_JAR_URL}" "javadoc" "jar"
-else
-  printf "\n"
-  log "INFO" "$(printf "SKIP JAVADOC JAR: %s" "${LOCAL_JAVADOC_JAR_FILE:-NULL}")"
+  legacy_upload
 fi
 
 printf "\n\n"
 log "WARN" "All done, you can check and publish your package at Bintray"
+printf "\n"
+log "WARN" "Please find the list of uploaded files below:"
+# shellcheck disable=SC2002
+cat /home/curl_user/uploaded_files.txt | while read -r line; do log "WARN" "$line"; done
 printf "\n\n"

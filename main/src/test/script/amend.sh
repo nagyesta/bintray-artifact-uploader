@@ -20,7 +20,7 @@ export INPUT_ARTIFACT_ARTIFACT_ID="artifact.name"
 export INPUT_ARTIFACT_VERSION="1.2.3"
 
 export INPUT_POM_FILE_NAME="pom.xml"
-export INPUT_JAR_FILE_NAME="*[y].jar.content"
+export INPUT_JAR_FILE_NAME="*-?.?.?.jar.content"
 export INPUT_SOURCE_JAR_FILE_NAME="*-sources.jar.content"
 export INPUT_JAVADOC_JAR_FILE_NAME="*-javadoc.jar.content"
 

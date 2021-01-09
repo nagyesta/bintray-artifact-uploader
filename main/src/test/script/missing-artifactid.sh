@@ -20,9 +20,9 @@ export INPUT_ARTIFACT_GROUP_ID="com.github.gh-user"
 export INPUT_ARTIFACT_VERSION="1.2.3"
 
 export INPUT_POM_FILE_NAME="pom.xml"
-export INPUT_JAR_FILE_NAME="dummy.jar.content"
-export INPUT_SOURCE_JAR_FILE_NAME="dummy-sources.jar.content"
-export INPUT_JAVADOC_JAR_FILE_NAME="dummy-javadoc.jar.content"
+export INPUT_JAR_FILE_NAME="dummy-1.2.3.jar.content"
+export INPUT_SOURCE_JAR_FILE_NAME="dummy-1.2.3-sources.jar.content"
+export INPUT_JAVADOC_JAR_FILE_NAME="dummy-1.2.3-javadoc.jar.content"
 
 docker run --rm --name bau-main -v "${INPUT_DIR_WORKSPACE}:/github/workspace/" \
   -e INPUT_ARTIFACT_GROUP_ID \

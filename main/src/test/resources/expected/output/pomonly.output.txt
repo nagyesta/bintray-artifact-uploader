@@ -17,11 +17,14 @@
 
   INFO :: SKIP JAR: NULL
 
-  INFO :: SKIP SOURCE JAR: NULL
+  INFO :: SKIP SOURCES JAR: NULL
 
   INFO :: SKIP JAVADOC JAR: NULL
 
 
   WARN :: All done, you can check and publish your package at Bintray
+
+  WARN :: Please find the list of uploaded files below:
+  WARN :: 4.0K	/github/workspace/pom.xml
 
 

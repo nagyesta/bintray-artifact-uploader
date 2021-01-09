@@ -6,6 +6,10 @@ name: DockerCI-PR
 on:
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - '.github/ISSUE_TEMPLATE/**'
 
 jobs:
   build:

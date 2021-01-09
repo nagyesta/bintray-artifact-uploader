@@ -1,0 +1,14 @@
+# Ignore comments
+
+And ignore line which are not matching
+
+com.github.gh-user:artifact.name:-:pom:pom.xml
+com.github.gh-user:artifact.name:-:jar:*-?.?.?.jar.content
+com.github.gh-user:artifact.name:sources:jar:*sources.jar.content
+com.github.gh-user:artifact.name:javadoc:jar:dummy-?.?.?-javadoc.jar.content
+com.github.gh-user:artifact.name-pom-only:-:pom:pom.xml
+com.github.gh-user:artifact.name-alt:-:pom:pom.xml
+com.github.gh-user:artifact.name-alt:-:jar:dummy-1.2.3.jar.content
+com.github.gh-user:artifact.name-alt:sources:jar:*-1.2.3-sources.jar.content
+com.github.gh-user:artifact.name-alt:javadoc:jar:dummy-1.2.3-javadoc.jar.content
+

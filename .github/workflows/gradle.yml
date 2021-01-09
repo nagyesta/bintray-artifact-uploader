@@ -6,7 +6,10 @@ name: DockerCI
 on:
   push:
     branches: [ main ]
-
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - '.github/ISSUE_TEMPLATE/**'
 jobs:
   build:
 

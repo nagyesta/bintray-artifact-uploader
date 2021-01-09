@@ -8,23 +8,62 @@
 
        :: Starting up...
 
+ DEBUG :: Sending GET to http://bau-wiremock:8080/empty/packages/subject/repo-name/package-name/versions/v1.2.3
 
   INFO :: Version not found: v1.2.3. Attempting to create it...
   INFO :: Version created.
 
   INFO :: Uploading /github/workspace/pom.xml
+ DEBUG ::  to
+ DEBUG ::   http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name/1.2.3/artifact.name-1.2.3.pom
+ DEBUG ::  as artifact
+ DEBUG ::   group: com.github.gh-user
+ DEBUG ::   name: artifact.name
+ DEBUG ::   version: 1.2.3
+ DEBUG ::   classifier: -
+ DEBUG ::   packaging: pom
   INFO :: Upload done.
 
-  INFO :: Uploading /github/workspace/dummy.jar.content
+  INFO :: Uploading /github/workspace/dummy-1.2.3.jar.content
+ DEBUG ::  to
+ DEBUG ::   http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name/1.2.3/artifact.name-1.2.3.jar
+ DEBUG ::  as artifact
+ DEBUG ::   group: com.github.gh-user
+ DEBUG ::   name: artifact.name
+ DEBUG ::   version: 1.2.3
+ DEBUG ::   classifier: -
+ DEBUG ::   packaging: jar
   INFO :: Upload done.
 
-  INFO :: Uploading /github/workspace/dummy-sources.jar.content
+  INFO :: Uploading /github/workspace/dummy-1.2.3-sources.jar.content
+ DEBUG ::  to
+ DEBUG ::   http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name/1.2.3/artifact.name-1.2.3-sources.jar
+ DEBUG ::  as artifact
+ DEBUG ::   group: com.github.gh-user
+ DEBUG ::   name: artifact.name
+ DEBUG ::   version: 1.2.3
+ DEBUG ::   classifier: sources
+ DEBUG ::   packaging: jar
   INFO :: Upload done.
 
-  INFO :: Uploading /github/workspace/dummy-javadoc.jar.content
+  INFO :: Uploading /github/workspace/dummy-1.2.3-javadoc.jar.content
+ DEBUG ::  to
+ DEBUG ::   http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name/1.2.3/artifact.name-1.2.3-javadoc.jar
+ DEBUG ::  as artifact
+ DEBUG ::   group: com.github.gh-user
+ DEBUG ::   name: artifact.name
+ DEBUG ::   version: 1.2.3
+ DEBUG ::   classifier: javadoc
+ DEBUG ::   packaging: jar
   INFO :: Upload done.
 
 
   WARN :: All done, you can check and publish your package at Bintray
+
+  WARN :: Please find the list of uploaded files below:
+  WARN :: 4.0K	/github/workspace/pom.xml
+  WARN :: 4.0K	/github/workspace/dummy-1.2.3.jar.content
+  WARN :: 4.0K	/github/workspace/dummy-1.2.3-sources.jar.content
+  WARN :: 4.0K	/github/workspace/dummy-1.2.3-javadoc.jar.content
 
 

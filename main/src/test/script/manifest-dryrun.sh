@@ -13,21 +13,25 @@ export INPUT_SUBJECT="subject"
 export INPUT_REPO="repo-name"
 export INPUT_PACKAGE_NAME="package-name"
 
-export INPUT_DRY_RUN="false"
+export INPUT_DEBUG_LOG="false"
+export INPUT_DRY_RUN="true"
 
-export INPUT_ARTIFACT_GROUP_ID="com.github.gh-user"
-export INPUT_ARTIFACT_ARTIFACT_ID="artifact.name"
+#export INPUT_ARTIFACT_GROUP_ID="com.github.gh-user"
+#export INPUT_ARTIFACT_ARTIFACT_ID="artifact.name"
 export INPUT_ARTIFACT_VERSION="1.2.3"
 
-export INPUT_POM_FILE_NAME="pom.xml"
-# export INPUT_JAR_FILE_NAME="dummy-1.2.3.jar.content"
-# export INPUT_SOURCE_JAR_FILE_NAME="dummy-1.2.3-sources.jar.content"
-# export INPUT_JAVADOC_JAR_FILE_NAME="dummy-1.2.3-javadoc.jar.content"
+#export INPUT_POM_FILE_NAME="pom.xml"
+#export INPUT_JAR_FILE_NAME="dummy-1.2.3.jar.content"
+#export INPUT_SOURCE_JAR_FILE_NAME="dummy-1.2.3-sources.jar.content"
+#export INPUT_JAVADOC_JAR_FILE_NAME="dummy-1.2.3-javadoc.jar.content"
+
+export INPUT_MANIFEST=upload-manifest.bau
 
 docker run --rm --name bau-main -v "${INPUT_DIR_WORKSPACE}:/github/workspace/" \
   -e INPUT_ARTIFACT_GROUP_ID \
   -e INPUT_ARTIFACT_ARTIFACT_ID \
   -e INPUT_ARTIFACT_VERSION \
+  -e INPUT_DEBUG_LOG \
   -e INPUT_DRY_RUN \
   -e INPUT_API_USER \
   -e INPUT_REPO \
@@ -39,6 +43,7 @@ docker run --rm --name bau-main -v "${INPUT_DIR_WORKSPACE}:/github/workspace/" \
   -e INPUT_JAVADOC_JAR_FILE_NAME \
   -e INPUT_BASE_URL \
   -e INPUT_SUBJECT \
+  -e INPUT_MANIFEST \
   --link bau-wiremock \
   "${IMAGE_NAME}" > "${OUTPUT_FILE_STD_OUTPUT}"
 

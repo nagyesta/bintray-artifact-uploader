@@ -1,0 +1,107 @@
+
+       ::  ██████╗         █████╗        ██╗   ██╗     ::
+       ::  ██╔══██╗       ██╔══██╗       ██║   ██║     ::
+       ::  ██████╔╝       ███████║       ██║   ██║     ::
+       ::  ██╔══██╗       ██╔══██║       ██║   ██║     ::
+       ::  ██████╔╝██╗    ██║  ██║██╗    ╚██████╔╝██╗  ::
+       ::  ╚═════╝ ╚═╝    ╚═╝  ╚═╝╚═╝     ╚═════╝ ╚═╝  ::
+
+       :: Starting up...
+
+
+
+  INFO :: Uploading /github/workspace/pom.xml
+  INFO :: SIMULATION:
+  INFO :: curl -T /github/workspace/pom.xml
+  INFO ::  -uapi-user:<API_KEY>
+  INFO ::  -H "X-Bintray-Package:package-name"
+  INFO ::  -H "X-Bintray-Version:v1.2.3"
+  INFO ::  http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name/1.2.3/artifact.name-1.2.3.pom
+
+
+  INFO :: Uploading /github/workspace/dummy-1.2.3.jar.content
+  INFO :: SIMULATION:
+  INFO :: curl -T /github/workspace/dummy-1.2.3.jar.content
+  INFO ::  -uapi-user:<API_KEY>
+  INFO ::  -H "X-Bintray-Package:package-name"
+  INFO ::  -H "X-Bintray-Version:v1.2.3"
+  INFO ::  http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name/1.2.3/artifact.name-1.2.3.jar
+
+
+  INFO :: Uploading /github/workspace/dummy-1.2.3-sources.jar.content
+  INFO :: SIMULATION:
+  INFO :: curl -T /github/workspace/dummy-1.2.3-sources.jar.content
+  INFO ::  -uapi-user:<API_KEY>
+  INFO ::  -H "X-Bintray-Package:package-name"
+  INFO ::  -H "X-Bintray-Version:v1.2.3"
+  INFO ::  http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name/1.2.3/artifact.name-1.2.3-sources.jar
+
+
+  INFO :: Uploading /github/workspace/dummy-1.2.3-javadoc.jar.content
+  INFO :: SIMULATION:
+  INFO :: curl -T /github/workspace/dummy-1.2.3-javadoc.jar.content
+  INFO ::  -uapi-user:<API_KEY>
+  INFO ::  -H "X-Bintray-Package:package-name"
+  INFO ::  -H "X-Bintray-Version:v1.2.3"
+  INFO ::  http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name/1.2.3/artifact.name-1.2.3-javadoc.jar
+
+
+  INFO :: Uploading /github/workspace/pom.xml
+  INFO :: SIMULATION:
+  INFO :: curl -T /github/workspace/pom.xml
+  INFO ::  -uapi-user:<API_KEY>
+  INFO ::  -H "X-Bintray-Package:package-name"
+  INFO ::  -H "X-Bintray-Version:v1.2.3"
+  INFO ::  http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name-pom-only/1.2.3/artifact.name-pom-only-1.2.3.pom
+
+
+  INFO :: Uploading /github/workspace/pom.xml
+  INFO :: SIMULATION:
+  INFO :: curl -T /github/workspace/pom.xml
+  INFO ::  -uapi-user:<API_KEY>
+  INFO ::  -H "X-Bintray-Package:package-name"
+  INFO ::  -H "X-Bintray-Version:v1.2.3"
+  INFO ::  http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name-alt/1.2.3/artifact.name-alt-1.2.3.pom
+
+
+  INFO :: Uploading /github/workspace/dummy-1.2.3.jar.content
+  INFO :: SIMULATION:
+  INFO :: curl -T /github/workspace/dummy-1.2.3.jar.content
+  INFO ::  -uapi-user:<API_KEY>
+  INFO ::  -H "X-Bintray-Package:package-name"
+  INFO ::  -H "X-Bintray-Version:v1.2.3"
+  INFO ::  http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name-alt/1.2.3/artifact.name-alt-1.2.3.jar
+
+
+  INFO :: Uploading /github/workspace/dummy-1.2.3-sources.jar.content
+  INFO :: SIMULATION:
+  INFO :: curl -T /github/workspace/dummy-1.2.3-sources.jar.content
+  INFO ::  -uapi-user:<API_KEY>
+  INFO ::  -H "X-Bintray-Package:package-name"
+  INFO ::  -H "X-Bintray-Version:v1.2.3"
+  INFO ::  http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name-alt/1.2.3/artifact.name-alt-1.2.3-sources.jar
+
+
+  INFO :: Uploading /github/workspace/dummy-1.2.3-javadoc.jar.content
+  INFO :: SIMULATION:
+  INFO :: curl -T /github/workspace/dummy-1.2.3-javadoc.jar.content
+  INFO ::  -uapi-user:<API_KEY>
+  INFO ::  -H "X-Bintray-Package:package-name"
+  INFO ::  -H "X-Bintray-Version:v1.2.3"
+  INFO ::  http://bau-wiremock:8080/empty/content/subject/repo-name/com/github/gh-user/artifact.name-alt/1.2.3/artifact.name-alt-1.2.3-javadoc.jar
+
+
+  WARN :: All done, you can check and publish your package at Bintray
+
+  WARN :: Please find the list of uploaded files below:
+  WARN :: 4.0K	/github/workspace/pom.xml
+  WARN :: 4.0K	/github/workspace/dummy-1.2.3.jar.content
+  WARN :: 4.0K	/github/workspace/dummy-1.2.3-sources.jar.content
+  WARN :: 4.0K	/github/workspace/dummy-1.2.3-javadoc.jar.content
+  WARN :: 4.0K	/github/workspace/pom.xml
+  WARN :: 4.0K	/github/workspace/pom.xml
+  WARN :: 4.0K	/github/workspace/dummy-1.2.3.jar.content
+  WARN :: 4.0K	/github/workspace/dummy-1.2.3-sources.jar.content
+  WARN :: 4.0K	/github/workspace/dummy-1.2.3-javadoc.jar.content
+
+
